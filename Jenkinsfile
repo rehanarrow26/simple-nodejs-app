@@ -12,7 +12,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo "📦 Cloning repository..."
-                git branch: 'main', url: 'https://github.com/rehanarrow26/simple-nodejs-app.git'
+                git branch: 'master', url: 'https://github.com/rehanarrow26/simple-nodejs-app.git'
             }
         }
 
