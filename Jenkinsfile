@@ -45,7 +45,7 @@ pipeline {
                 echo "🚀 Deploying to 192.168.10.26..."
                 sshagent(['ssh_ke_web']) {
                     sh '''
-                        ssh -o StrictHostKeyChecking=no root@192.168.10.26 "
+                        ssh -o StrictHostKeyChecking=no -p26 root@192.168.10.26 "
                             cd /root/simple-app && \
                             docker compose pull && \
                             docker compose up -d
