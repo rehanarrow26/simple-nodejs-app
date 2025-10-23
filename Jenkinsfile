@@ -41,19 +41,19 @@ pipeline {
         }
 
         stage('Deploy to Web Server') {
-            steps {
-                echo "🚀 Deploying to 192.168.10.26..."
-                sshagent(['ssh_ke_web']) {
-                    sh '''
-                        ssh -o StrictHostKeyChecking=no -p26 root@192.168.10.26 "
-                            cd /root/simple-app && \
-                            docker compose pull && \
-                            docker compose up -d
-                        "
-                    '''
-                }
-            }
+    steps {
+        echo "🚀 Deploying to 192.168.10.26 (port 26) using username & password..."
+        withCredentials([usernamePassword(credentialsId: 'ssh_ke_web', usernameVariable: 'SSH_USER', passwordVariable: 'SSH_PASS')]) {
+            sh '''
+                sshpass -p "$SSH_PASS" ssh -o StrictHostKeyChecking=no -p 26 $SSH_USER@192.168.10.26 "
+                    cd /root/simple-app && \
+                    docker compose pull && \
+                    docker compose up -d
+                "
+            '''
         }
+    }
+}
     }
 
     post {
