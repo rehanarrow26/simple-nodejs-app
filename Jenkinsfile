@@ -39,14 +39,29 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy to Web Server') {
+            steps {
+                echo "🚀 Deploying to 192.168.10.26..."
+                sshagent(['ssh_ke_web']) {
+                    sh '''
+                        ssh -o StrictHostKeyChecking=no root@192.168.10.26 "
+                            cd /root/simple-app && \
+                            docker compose pull && \
+                            docker compose up -d
+                        "
+                    '''
+                }
+            }
+        }
     }
 
     post {
         success {
-            echo "✅ Build and push completed successfully!"
+            echo "✅ Build, push, and deploy completed successfully!"
         }
         failure {
-            echo "❌ Build or push failed. Please check logs."
+            echo "❌ Build, push, or deploy failed. Please check logs."
         }
     }
 }
